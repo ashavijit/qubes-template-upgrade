@@ -1,0 +1,75 @@
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name        = "qubes-template-upgrade"
+version     = "0.1.0"
+description = "Automated in-place upgrade for Fedora and Debian templates in Qubes OS"
+readme      = "README.md"
+license     = { text = "GPL-2.0-only" }
+requires-python = ">=3.10"
+authors = [{ name = "Avijit Sen", email = "avijitsen24.me@gmail.com" }]
+
+keywords = [
+    "qubes-os", "template", "upgrade", "fedora", "debian",
+    "qvm", "dom0", "gsoc",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Systems Administration",
+]
+
+dependencies = [
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+qvm-template-upgrade = "template_upgrade.cli:cli"
+
+[project.urls]
+Homepage   = "https://github.com/ashavijit/qubes-template-upgrade"
+Repository = "https://github.com/ashavijit/qubes-template-upgrade"
+"Issue #8605" = "https://github.com/QubesOS/qubes-issues/issues/8605"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length    = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["src/template_upgrade"]
+omit   = ["*/tests/*", "*/agents/*"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under   = 75
+
+[tool.mypy]
+python_version         = "3.10"
+strict                 = true
+ignore_missing_imports = true
